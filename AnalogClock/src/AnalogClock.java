@@ -16,7 +16,7 @@ public class AnalogClock extends JPanel {
         g.setColor(Color.BLACK);
         g.drawOval(panelCenter.x - radius, panelCenter.y - radius, 2 * radius, 2 * radius);
 
-        // Draw lines from the center to the edge of the circle
+
         for (int i = 0; i < 60; i++) {
             double angle = Math.toRadians(i * 6); // 6 degrees for each minute mark
             int xEnd = (int) (panelCenter.x + radius * Math.cos(angle));
@@ -30,7 +30,6 @@ public class AnalogClock extends JPanel {
                 e.printStackTrace();
             }
 
-            // Erase the previous line by drawing it in the background color
             g.setColor(getBackground());
             g.drawLine(panelCenter.x, panelCenter.y, xEnd, yEnd);
         }
