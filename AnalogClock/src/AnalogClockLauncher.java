@@ -16,7 +16,7 @@ public class AnalogClockLauncher {
         System.out.println("My Analog clock starting...");
 
         JFrame frame = new JFrame("clock hand line");
-        AnalogClock ac1 = new AnalogClock();
+        AnalogClock ac1 = new anirudhj.analogclock.AnalogClock();
 
         frame.add(ac1);
 
