@@ -7,7 +7,6 @@ import javax.swing.*;
 
 public class AnalogClockLauncher {
 
-
     public static void main(String[] args){
 
         /*Scanner sc = new Scanner(System.in);
@@ -21,9 +20,8 @@ public class AnalogClockLauncher {
 
         frame.add(ac1);
 
-        frame.setSize(1000, 1000);
+        frame.setSize(800, 800);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
-
 }
