@@ -33,11 +33,14 @@ public class AnalogClock extends JPanel {
     private ActionListener onClockTick = e -> {
         System.out.println("Inside onClickTick() at " + new Date());
 
-        double normal = (double) 30 / 3600;
-        secondHandAngle = Math.toRadians(i * 6); // 6 degrees for each minute mark
-        miniutHandAngle = Math.toRadians((i+2646) * 0.1);
-        hourHandAngle = Math.toRadians((i+(270/normal)) * normal);
-        i++;
+        Date now = new Date();
+        int seconds = now.getSeconds();
+        int minutes = now.getMinutes();
+        int hours = now.getHours();
+
+        secondHandAngle = Math.toRadians((seconds * 6) - 90); // 6 degrees for each minute mark
+        miniutHandAngle = Math.toRadians(((minutes * 6 + seconds * 0.1)) - 90);
+        hourHandAngle = Math.toRadians(((hours % 12) * 30 + minutes * 0.5) - 90);
 
         this.repaint();
     };
@@ -47,12 +50,14 @@ public class AnalogClock extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
 
-        // Dimension mySize = this.getSize();
-        panelCenter = new Point(this.getSize().width / 2, this.getSize().height / 2);
-        int radius = Math.min(this.getSize().width, this.getSize().height) / 2;
+        Dimension mySize = this.getSize();
+        Point panelCenter = new Point(mySize.width / 2, mySize.height / 2);
 
+        int radius = Math.min(mySize.width, mySize.height) / 2;
+        g2.setColor(Color.BLACK);
+        g2.drawOval(panelCenter.x - radius, panelCenter.y - radius, 2 * radius, 2 * radius);
 
-        this.drawClockFrame(g2);
+//        this.drawClockFrame(g2);
 
         //Seconds Hand
         int xEnd_sec = (int) (panelCenter.x + (radius * 0.9) * Math.cos(secondHandAngle));
@@ -75,22 +80,27 @@ public class AnalogClock extends JPanel {
         g2.setStroke(new BasicStroke(7));
         g2.drawLine(panelCenter.x, panelCenter.y, xEnd_hour, yEnd_hour);
 
+        //Time markers
         for (int hour = 0; hour < 12; hour++) {
             double angle = Math.toRadians((hour * 30) - 90); // 30 degrees for each hour (-90 because it starts form 3)
             int x = (int) (panelCenter.x + (radius * 0.95) * Math.cos(angle));
             int y = (int) (panelCenter.y + (radius * 0.95) * Math.sin(angle));
             g2.fillOval(x - 3, y - 3, 10, 10);
         }
+
+        //Center point
+        g.setColor(Color.BLACK);
+        g.drawOval(panelCenter.x - 5, panelCenter.y - 5, 10, 10);
     }
 
-    private void drawClockFrame(Graphics2D g2) {
-        // Circle
-
-        g2.setColor(Color.BLACK);
-        g2.drawOval(panelCenter.x - radius, panelCenter.y - radius, 2 * radius, 2 * radius);
-
-        // Points
-        g2.setColor(Color.BLACK);
-        g2.fillOval(panelCenter.x - 5, panelCenter.y - 5, 10, 10);
-    }
+//    private void drawClockFrame(Graphics2D g2) {
+//        // Circle
+//
+//        g2.setColor(Color.BLACK);
+//        g2.drawOval(panelCenter.x - radius, panelCenter.y - radius, 2 * radius, 2 * radius);
+//
+//        // Points
+//        g2.setColor(Color.BLACK);
+//        g2.fillOval(panelCenter.x - 5, panelCenter.y - 5, 10, 10);
+//    }
 }

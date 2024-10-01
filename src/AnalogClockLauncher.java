@@ -8,19 +8,14 @@ public class AnalogClockLauncher {
     public static void main(String[] args) {
 
         Calendar calendar = Calendar.getInstance();
-//        hour = calendar.get(Calendar.HOUR_OF_DAY);
-//        min = calendar.get(Calendar.MINUTE);
-//        sec = calendar.get(Calendar.SECOND);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        int second = calendar.get(Calendar.SECOND);
 
         System.out.println("My Analog clock starting...");
 
         JFrame frame = new JFrame("clock hand line");
-        AnalogClock ac1 = new anirudhj.analogclock.AnalogClock(
-                                    calendar.get(Calendar.HOUR_OF_DAY),
-                                    calendar.get(Calendar.MINUTE),
-                                    calendar.get(Calendar.SECOND));
-
-        //AnalogClock ac1 = new anirudhj.analogclock.AnalogClock(3, 10, 50);
+        AnalogClock ac1 = new anirudhj.analogclock.AnalogClock(hour, minute, second);
 
         frame.add(ac1);
 
