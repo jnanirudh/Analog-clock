@@ -8,18 +8,14 @@ public class AnalogClock extends JPanel {
     private Timer clockTimer;
 
     private double secondHandAngle = 0;
-    private double miniutHandAngle = 0;
+    private double minuteHandAngle = 0;
     private double hourHandAngle = 0;
 
-    private int i = 45;
-    private int startingHour, startingMin, startingSec;
     private Point panelCenter;
     private int radius;
 
     public AnalogClock (int startingHour, int startingMin, int startingSec) {
-        this.startingHour = startingHour;
-        this.startingMin = startingMin;
-        this.startingSec = startingSec;
+        calculateHandAngles(startingHour, startingMin, startingSec );
 
         // This starts our clock timer
         clockTimer = new Timer(1000, onClockTick);
@@ -27,20 +23,23 @@ public class AnalogClock extends JPanel {
 
         // Dimension mySize = this.getSize();
         panelCenter = new Point(this.getSize().width / 2, this.getSize().height / 2);
-        int radius = Math.min(this.getSize().width, this.getSize().height) / 2;
+        radius = Math.min(this.getSize().width, this.getSize().height) / 2;
     }
 
+    private void calculateHandAngles(int hr, int min, int sec){
+        secondHandAngle = Math.toRadians((sec * 6) - 90); // 6 degrees for each minute mark
+        minuteHandAngle = Math.toRadians(((min * 6 + sec * 0.1)) - 90);
+        hourHandAngle = Math.toRadians(((hr % 12) * 30 + min * 0.5) - 90);
+    }
     private ActionListener onClockTick = e -> {
         System.out.println("Inside onClickTick() at " + new Date());
 
         Date now = new Date();
-        int seconds = now.getSeconds();
-        int minutes = now.getMinutes();
-        int hours = now.getHours();
+        int second = now.getSeconds();
+        int minute = now.getMinutes();
+        int hour = now.getHours();
 
-        secondHandAngle = Math.toRadians((seconds * 6) - 90); // 6 degrees for each minute mark
-        miniutHandAngle = Math.toRadians(((minutes * 6 + seconds * 0.1)) - 90);
-        hourHandAngle = Math.toRadians(((hours % 12) * 30 + minutes * 0.5) - 90);
+        calculateHandAngles(hour, minute,second);
 
         this.repaint();
     };
@@ -57,8 +56,6 @@ public class AnalogClock extends JPanel {
         g2.setColor(Color.BLACK);
         g2.drawOval(panelCenter.x - radius, panelCenter.y - radius, 2 * radius, 2 * radius);
 
-//        this.drawClockFrame(g2);
-
         //Seconds Hand
         int xEnd_sec = (int) (panelCenter.x + (radius * 0.9) * Math.cos(secondHandAngle));
         int yEnd_sec = (int) (panelCenter.y + (radius * 0.9) * Math.sin(secondHandAngle));
@@ -67,8 +64,8 @@ public class AnalogClock extends JPanel {
         g2.drawLine(panelCenter.x, panelCenter.y, xEnd_sec, yEnd_sec);
 
         //Minute Hand
-        int xEnd_min = (int) (panelCenter.x + (radius * 0.75) * Math.cos(miniutHandAngle));
-        int yEnd_min = (int) (panelCenter.y + (radius * 0.75) * Math.sin(miniutHandAngle));
+        int xEnd_min = (int) (panelCenter.x + (radius * 0.75) * Math.cos(minuteHandAngle));
+        int yEnd_min = (int) (panelCenter.y + (radius * 0.75) * Math.sin(minuteHandAngle));
         g2.setColor(Color.BLACK);
         g2.setStroke(new BasicStroke(5));
         g2.drawLine(panelCenter.x, panelCenter.y, xEnd_min, yEnd_min);
@@ -92,15 +89,4 @@ public class AnalogClock extends JPanel {
         g.setColor(Color.BLACK);
         g.drawOval(panelCenter.x - 5, panelCenter.y - 5, 10, 10);
     }
-
-//    private void drawClockFrame(Graphics2D g2) {
-//        // Circle
-//
-//        g2.setColor(Color.BLACK);
-//        g2.drawOval(panelCenter.x - radius, panelCenter.y - radius, 2 * radius, 2 * radius);
-//
-//        // Points
-//        g2.setColor(Color.BLACK);
-//        g2.fillOval(panelCenter.x - 5, panelCenter.y - 5, 10, 10);
-//    }
 }
